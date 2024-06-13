@@ -69,7 +69,7 @@ server <- function(input, output) {
       
       models <-unique(raw$model[idx])
       yr <- unique(raw$retyr[idx])
-      obs <- unique(raw$obs[idx])
+      obs <- unique(raw$observation[idx])
       
       
       par(pty="s",xpd = TRUE,  omi = c(0,0,0,0), bg = NA)
