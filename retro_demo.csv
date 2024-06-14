@@ -1,4 +1,4 @@
-popID,retyr,forecast,observation,age,model
+stock,retroyear,forecast,observation,age,model
 Early Stuart,2020,25917,16000,all,LLY
 Early Stuart,2020,17836,16000,all,R1C
 Early Stuart,2020,100889.5,16000,all,R2C

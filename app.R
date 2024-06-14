@@ -11,7 +11,7 @@ library(plotrix)
 
 raw <- read.csv("retro_demo.csv") # replace this with your own file
 
-stock <- unique(raw$popID)
+stock <- unique(raw$stock)
 age <- unique(raw$age)
 
 
@@ -65,10 +65,10 @@ server <- function(input, output) {
     
     output$Taylor <- renderPlot({
       # Select the proper index for stock and age
-      idx <- which(raw$popID == input$selectedStock & raw$age == input$selectedAge)
+      idx <- which(raw$stock == input$selectedStock & raw$age == input$selectedAge)
       
       models <-unique(raw$model[idx])
-      yr <- unique(raw$retyr[idx])
+      yr <- unique(raw$retroyear[idx])
       obs <- unique(raw$observation[idx])
       
       
@@ -84,8 +84,8 @@ server <- function(input, output) {
       
       for (i in 1:length(models)){ # loop over models
         
-        forecast <- as.numeric(raw$forecast[raw$model==models[i]&raw$popID == input$selectedStock & raw$age == input$selectedAge])
-        obs <- as.numeric(raw$obs[raw$model==models[i]&raw$popID == input$selectedStock & raw$age == input$selectedAge])
+        forecast <- as.numeric(raw$forecast[raw$model==models[i]&raw$stock == input$selectedStock & raw$age == input$selectedAge])
+        obs <- as.numeric(raw$obs[raw$model==models[i]&raw$stock == input$selectedStock & raw$age == input$selectedAge])
 
         # define color and shape for each model
         if (grepl("Ricker",models[i])) {
