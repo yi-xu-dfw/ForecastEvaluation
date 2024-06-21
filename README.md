@@ -1,4 +1,4 @@
-This app is used to evaluate multiple forecast models using Taylor diagrams
+This app is used to evaluate multiple forecast models using Taylor diagrams (Taylor, 2001 https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2000JD900719)
 Published by Yi Xu.  
 Contact yi.xu@dfw.wa.gov for questions. Last update 2024.6.13.
 Data is an old fraser sockeye forecast retrospective analysis, for demonstration purpose only.
