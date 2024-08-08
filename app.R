@@ -10,6 +10,7 @@ library(shiny)
 library(plotrix)
 
 raw <- read.csv("retro_demo.csv") # replace this with your own file
+#raw <- read.csv("new_pred.csv") # replace this with your own file
 
 stock <- unique(raw$stock)
 age <- unique(raw$age)
@@ -44,16 +45,23 @@ ui <- fluidPage(
         label = "Select age",        # Input label
         choices = age                # Dropdown choices
       ),
+      
+      sliderInput(inputId = "selectYear", "Evaluation Year Range",
+                  min = min(raw$retroyear), 
+                  max = max(raw$retroyear), 
+                  value = c(min(raw$retroyear),max(raw$retroyear)),
+                  sep = "",
+                  step = 1),
       br(),
       div("Developed by Yi Xu"),
       div("yi.xu@dfw.wa.gov"),
-      div("Last update 2024.6.13."),
+      div("Last update 2024.8.8."),
       div("Method in Xu et al. 2024 CJFAS")
     ),
     
     # Main panel for displaying outputs
     mainPanel( width = 9,
-      
+      textOutput("text"),
       # Output: Plot of the Taylor diagram
       plotOutput(outputId = "Taylor", height = "480px")
     )
@@ -62,10 +70,12 @@ ui <- fluidPage(
 
 # Define server logic required to draw the Taylor diagram
 server <- function(input, output) {
-    
+  
+    output$text <- renderText(paste0("We are evaluating from ", input$selectYear[1], " to ", input$selectYear[2],"."))
+  
     output$Taylor <- renderPlot({
       # Select the proper index for stock and age
-      idx <- which(raw$stock == input$selectedStock & raw$age == input$selectedAge)
+      idx <- which(raw$stock == input$selectedStock & raw$age == input$selectedAge & (raw$retroyear >= input$selectYear[1] & raw$retroyear <= input$selectYear[2]))
       
       models <-unique(raw$model[idx])
       yr <- unique(raw$retroyear[idx])
@@ -84,8 +94,8 @@ server <- function(input, output) {
       
       for (i in 1:length(models)){ # loop over models
         
-        forecast <- as.numeric(raw$forecast[raw$model==models[i]&raw$stock == input$selectedStock & raw$age == input$selectedAge])
-        obs <- as.numeric(raw$obs[raw$model==models[i]&raw$stock == input$selectedStock & raw$age == input$selectedAge])
+        forecast <- as.numeric(raw$forecast[raw$model==models[i]&raw$stock == input$selectedStock & raw$age == input$selectedAge & (raw$retroyear >= input$selectYear[1] & raw$retroyear <= input$selectYear[2])])
+        obs <- as.numeric(raw$obs[raw$model==models[i]&raw$stock == input$selectedStock & raw$age == input$selectedAge & (raw$retroyear >= input$selectYear[1] & raw$retroyear <= input$selectYear[2])])
 
         # define color and shape for each model
         if (grepl("Ricker",models[i])) {
